@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacitación Power BI para Retail - Centro de Aprendizaje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            max-height: 350px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .data-table {
+            background-color: #e0f2fe;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 0.75rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        
+        .accordion-content.open {
+            max-height: 800px;
+            opacity: 1;
+        }
+
+        /* Mejoras para el sidebar */
+        .sidebar-nav {
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        /* Mejoras para las tarjetas */
+        .content-card {
+            min-height: auto;
+            word-wrap: break-word;
+        }
+
+        /* Grid responsive mejorado */
+        .responsive-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .responsive-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .responsive-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Mejoras para acordeones */
+        .accordion-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .accordion-header {
+            padding: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .accordion-header:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* Mejoras para el contenido principal */
+        .main-content {
+            min-height: calc(100vh - 80px);
+            padding-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+    <!-- Mobile Header -->
+    <header class="bg-gray-100 text-gray-800 shadow-md py-4 px-4 fixed w-full z-40 flex justify-between items-center md:hidden">
+        <div class="flex items-center space-x-3">
+            <img src="https://data-bunker.ai/lovable-uploads/1b666137-3131-4a53-95d1-d85785232e04.png" alt="Data Bunker Logo" class="h-8 w-auto">
+            <h1 class="text-xl font-extrabold tracking-tight">Data Bunker</h1>
+        </div>
+        <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 h-full bg-blue-900 text-white w-64 p-6 shadow-xl z-30 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="h-20 md:hidden"></div>
+            
+            <!-- Desktop Logo -->
+            <div class="hidden md:flex items-center space-x-3 mb-8">
+                <img src="https://data-bunker.ai/lovable-uploads/1b666137-3131-4a53-95d1-d85785232e04.png" alt="Data Bunker Logo" class="h-10 w-auto filter brightness-150">
+                <h1 class="text-2xl font-extrabold tracking-tight">Data Bunker</h1>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#inicio" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white font-medium">
+                            Inicio
+                        </a>
+                    </li>
+                    
+                    <!-- Sesión 1 -->
+                    <li>
+                        <button class="accordion-sidebar-header w-full text-left px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white font-medium flex justify-between items-center">
+                            Sesión de Capacitación 1
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <ul class="accordion-sidebar-content pl-4 pt-2">
+                            <li><a href="#introduccion_powerbi" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white text-sm">1. Introducción a Power BI</a></li>
+                            <li><a href="#preparacion_datos" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white text-sm">2. Preparación de Datos</a></li>
+                            <li><a href="#modelado_datos" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white text-sm">3. Modelado de Datos</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Sesión 2 -->
+                    <li>
+                        <button class="accordion-sidebar-header w-full text-left px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white font-medium flex justify-between items-center">
+                            Sesión de Capacitación 2
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <ul class="accordion-sidebar-content pl-4 pt-2 hidden">
+                            <li><a href="#diseno_reportes" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white text-sm">4. Diseño de Reportes</a></li>
+                            <li><a href="#dax_formulas" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white text-sm">5. DAX: Fórmulas y Medidas</a></li>
+                            <li><a href="#publicacion_colaboracion" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white text-sm">6. Publicación y Colaboración</a></li>
+                            <li><a href="#recursos_requisitos" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white text-sm">7. Recursos y Requisitos</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Video -->
+                    <li>
+                        <a href="#video_sesion" class="nav-link block px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300 text-white font-medium">
+                            Video de la Sesión
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 pt-20 md:pt-0 md:ml-64">
+            <main class="main-content w-full px-4 py-8">
+                
+                <!-- INICIO -->
+                <section id="inicio" class="content-section bg-white rounded-2xl shadow-xl p-8 mb-8 max-w-7xl mx-auto">
+                    <h2 class="text-4xl font-extrabold text-blue-700 mb-6 tracking-wide">Bienvenida a la Capacitación de Power BI para Retail</h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-lg mb-6 leading-relaxed text-gray-700">
+                            ¡Bienvenidos a este centro de aprendizaje interactivo para la capacitación introductoria a Microsoft Power BI! Aquí podrán explorar a fondo los temas clave de la capacitación, desde los fundamentos hasta el modelado avanzado y la publicación de informes.
+                        </p>
+                        
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-blue-700 font-semibold">
+                                        Fecha de la Capacitación: 21 de julio de 2025
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 border border-blue-200">
+                            <h3 class="text-2xl font-bold text-blue-800 mb-4">Objetivo de la Capacitación</h3>
+                            <p class="text-lg leading-relaxed text-gray-700">
+                                Capacitar a los participantes en las funcionalidades fundamentales de Microsoft Power BI para el desarrollo de competencias básicas en análisis y visualización de datos aplicados al sector retail, mediante el uso de herramientas de conexión de datos, modelado básico y creación de reportes interactivos.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SESIÓN 1 -->
+                <section id="sesion1_group" class="content-section bg-white rounded-2xl shadow-xl p-8 mb-8 hidden max-w-7xl mx-auto">
+                    <h2 class="text-4xl font-extrabold text-blue-700 mb-8 tracking-wide">Sesión 1: Fundamentos de Power BI</h2>
+                    
+                    <!-- 1. Introducción a Power BI -->
+                    <div id="introduccion_powerbi" class="mb-12">
+                        <div class="content-card bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 mb-8">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-6">1. Introducción a Power BI</h3>
+                            
+                            <div class="prose max-w-none">
+                                <p class="text-lg mb-6 leading-relaxed">
+                                    Microsoft Power BI es una suite de herramientas de inteligencia de negocios que permite conectar, transformar, modelar y visualizar datos para crear informes interactivos y cuadros de mando.
+                                </p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <div class="bg-white p-6 rounded-lg shadow-md">
+                                        <h4 class="text-xl font-semibold text-blue-700 mb-3">¿Por qué Power BI en Retail?</h4>
+                                        <ul class="space-y-3 text-gray-700">
+                                            <li class="flex items-start">
+                                                <span class="text-blue-500 mr-2">•</span>
+                                                <span><strong>Toma de decisiones basada en datos:</strong> Transforma datos brutos en información valiosa</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-500 mr-2">•</span>
+                                                <span><strong>Monitoreo de métricas clave:</strong> Ventas, inventarios y rendimiento de productos</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-500 mr-2">•</span>
+                                                <span><strong>Identificación de tendencias:</strong> Patrones y oportunidades del consumidor</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-500 mr-2">•</span>
+                                                <span><strong>Optimización de estrategias:</strong> Mejora campañas con insights precisos</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-white p-6 rounded-lg shadow-md">
+                                        <h4 class="text-xl font-semibold text-blue-700 mb-3">Demo: Dashboard en Acción</h4>
+                                        <div class="chart-container">
+                                            <canvas id="salesByCategoryChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">El Ecosistema de Power BI</h4>
+                                    
+                                    <div class="responsive-grid mb-6">
+                                        <button class="eco-tab-button bg-blue-100 text-blue-700 px-6 py-3 rounded-lg hover:bg-blue-200 transition duration-300 shadow-sm font-medium" data-target="desktop">
+                                            💻 Power BI Desktop
+                                        </button>
+                                        <button class="eco-tab-button bg-blue-100 text-blue-700 px-6 py-3 rounded-lg hover:bg-blue-200 transition duration-300 shadow-sm font-medium" data-target="service">
+                                            ☁️ Servicio Power BI
+                                        </button>
+                                        <button class="eco-tab-button bg-blue-100 text-blue-700 px-6 py-3 rounded-lg hover:bg-blue-200 transition duration-300 shadow-sm font-medium" data-target="mobile">
+                                            📱 Power BI Mobile
+                                        </button>
+                                    </div>
+                                    
+                                    <div id="eco-content-desktop" class="eco-content p-6 bg-gray-50 rounded-lg border border-gray-200">
+                                        <h5 class="font-bold text-xl mb-3 text-blue-700">Power BI Desktop</h5>
+                                        <p class="mb-4 text-gray-700 leading-relaxed">
+                                            Aplicación de escritorio gratuita para Windows. Es donde se realiza la mayor parte del trabajo de desarrollo: conexión a fuentes de datos, transformación de datos (Power Query), modelado de datos (DAX) y diseño de informes.
+                                        </p>
+                                        <a href="https://www.microsoft.com/es-es/download/details.aspx?id=58494" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                                            Descarga Power BI Desktop →
+                                        </a>
+                                    </div>
+                                    
+                                    <div id="eco-content-service" class="eco-content p-6 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                                        <h5 class="font-bold text-xl mb-3 text-blue-700">Servicio Power BI</h5>
+                                        <p class="mb-4 text-gray-700 leading-relaxed">
+                                            Plataforma basada en la nube (SaaS) donde se publican los informes y cuadros de mando creados en Desktop. Permite compartir, colaborar, configurar actualizaciones programadas y crear dashboards personalizados.
+                                        </p>
+                                        <a href="https://learn.microsoft.com/es-mx/power-bi/fundamentals/power-bi-service-overview" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                                            Explora el Servicio Power BI →
+                                        </a>
+                                    </div>
+                                    
+                                    <div id="eco-content-mobile" class="eco-content p-6 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                                        <h5 class="font-bold text-xl mb-3 text-blue-700">Power BI Mobile</h5>
+                                        <p class="mb-4 text-gray-700 leading-relaxed">
+                                            Aplicaciones nativas para iOS, Android y Windows. Permiten a los usuarios acceder y consumir informes y cuadros de mando desde sus dispositivos móviles, con una experiencia optimizada para pantallas táctiles.
+                                        </p>
+                                        <a href="https://play.google.com/store/apps/details?id=com.microsoft.powerbim&hl=es_419" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                                            Descarga Power BI Mobile →
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 text-center">
+                                    <a href="https://learn.microsoft.com/es-es/training/powerplatform/power-bi" target="_blank" class="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">
+                                        📚 Aprende más en Microsoft Learn →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Preparación de Datos -->
+                    <div id="preparacion_datos" class="mb-12">
+                        <div class="content-card bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-8">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-6">2. Preparación de Datos</h3>
+                            
+                            <div class="prose max-w-none">
+                                <p class="text-lg mb-6 leading-relaxed text-gray-700">
+                                    La calidad de tus datos es crucial para un análisis preciso. Esta sección te guiará a través de los pasos para conectar y limpiar tus datos.
+                                </p>
+                                
+                                <!-- Limpieza Previa -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Limpieza Previa a la Integración</h4>
+                                    <p class="mb-6 text-gray-700">Antes de cargar datos en Power BI, es vital realizar una limpieza inicial para asegurar la calidad y consistencia.</p>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">🔍</span>
+                                                    Identificación de datos erróneos o nulos
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="text-gray-700 leading-relaxed">
+                                                    Buscar y corregir valores faltantes, inconsistencias o errores en los datos que puedan distorsionar el análisis. Incluye revisar formatos de fecha, valores numéricos fuera de rango y campos obligatorios vacíos.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">📏</span>
+                                                    Estandarización de campos
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="text-gray-700 leading-relaxed">
+                                                    Asegurar que los nombres de columnas y los formatos de datos (fechas, números, texto) sean consistentes en todas las fuentes. Esto incluye unificar nomenclaturas y estructuras de datos.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">✅</span>
+                                                    Validaciones de integridad
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="text-gray-700 leading-relaxed">
+                                                    Verificar que los datos cumplan con reglas de negocio o rangos esperados para garantizar su integridad. Por ejemplo, verificar que las fechas estén en rangos válidos y que los precios sean positivos.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Conexión a Fuentes -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Conexión a Fuentes Comunes</h4>
+                                    <p class="mb-6 text-gray-700">Power BI permite conectar a una vasta cantidad de fuentes de datos. Para retail, las más comunes son:</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="text-center p-6 bg-blue-50 rounded-lg shadow-sm">
+                                            <div class="text-6xl mb-4">📊</div>
+                                            <h5 class="text-xl font-semibold mb-2">Excel</h5>
+                                            <p class="text-gray-600 mb-4">Archivos de ventas diarias, inventarios y reportes</p>
+                                            <a href="https://learn.microsoft.com/es-es/power-bi/connect-data/desktop-import-excel-workbooks" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                                Conectar a Excel →
+                                            </a>
+                                        </div>
+                                        
+                                        <div class="text-center p-6 bg-blue-50 rounded-lg shadow-sm">
+                                            <div class="text-6xl mb-4">📄</div>
+                                            <h5 class="text-xl font-semibold mb-2">CSV</h5>
+                                            <p class="text-gray-600 mb-4">Datos de inventario, transacciones y productos</p>
+                                            <a href="https://learn.microsoft.com/es-es/power-bi/connect-data/refresh-csv-file-onedrive" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                                Conectar a CSV →
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                        <p class="text-center text-yellow-800 font-medium">
+                                            💡 <strong>Ejercicio Práctico:</strong> Conectar a un archivo Excel de ventas
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Power Query -->
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Transformación con Power Query</h4>
+                                    <p class="mb-6 text-gray-700">Power Query es el motor de transformación de datos de Power BI. Permite limpiar y preparar los datos antes de cargarlos al modelo.</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                            <h5 class="font-semibold text-lg mb-2 text-blue-700">Filtrar y Transformar</h5>
+                                            <p class="text-gray-700 mb-3">Elimina filas o columnas innecesarias y ajusta los valores según las necesidades del análisis.</p>
+                                            <a href="https://support.microsoft.com/en-us/office/filter-data-power-query-b5610630-f5bf-4ba4-9217-a628f9b89353" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                Filtrar datos →
+                                            </a>
+                                        </div>
+                                        
+                                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                            <h5 class="font-semibold text-lg mb-2 text-blue-700">Eliminar Duplicados</h5>
+                                            <p class="text-gray-700 mb-3">Asegura que cada registro sea único, evitando conteos erróneos en el análisis.</p>
+                                            <a href="https://learn.microsoft.com/en-us/power-query/working-with-duplicates" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                Trabajar con duplicados →
+                                            </a>
+                                        </div>
+                                        
+                                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                            <h5 class="font-semibold text-lg mb-2 text-blue-700">Cambiar Tipos de Datos</h5>
+                                            <p class="text-gray-700 mb-3">Define el formato correcto para cada columna (texto, número, fecha, etc.).</p>
+                                            <a href="https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-data-types" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                Tipos de datos →
+                                            </a>
+                                        </div>
+                                        
+                                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                            <h5 class="font-semibold text-lg mb-2 text-blue-700">Combinar Tablas</h5>
+                                            <p class="text-gray-700 mb-3">Une datos de diferentes fuentes basándose en columnas comunes.</p>
+                                            <a href="https://support.microsoft.com/en-us/office/merge-queries-power-query-fd157620-5470-4c0f-b132-7ca2616d17f9" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                Combinar consultas →
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6 text-center">
+                                        <a href="https://learn.microsoft.com/en-us/power-query/power-query-what-is-power-query" target="_blank" class="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 font-medium">
+                                            📖 Introducción a Power Query →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Modelado de Datos -->
+                    <div id="modelado_datos" class="mb-12">
+                        <div class="content-card bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-8">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-6">3. Modelado de Datos para Retail</h3>
+                            
+                            <div class="prose max-w-none">
+                                <p class="text-lg mb-6 leading-relaxed text-gray-700">
+                                    El modelado de datos es el proceso de definir las relaciones entre tus tablas para que Power BI pueda entender cómo se conectan y realizar cálculos precisos.
+                                </p>
+                                
+                                <!-- Explicación de Relaciones -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Relaciones entre Tablas</h4>
+                                    <p class="mb-6 text-gray-700">Las relaciones permiten que los filtros aplicados en una tabla afecten a otras tablas relacionadas, creando un modelo de datos coherente.</p>
+                                    
+                                    <!-- Diagrama de Modelo -->
+                                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
+                                            <div class="data-table">
+                                                <h5 class="font-bold text-lg mb-2">Tabla de Ventas</h5>
+                                                <p class="text-sm text-gray-600 mb-2">Tabla de Hechos</p>
+                                                <div class="text-xs space-y-1">
+                                                    <p><strong>Hechos:</strong> Monto, Cantidad</p>
+                                                    <p><strong>Claves:</strong> ID_Producto, ID_Fecha</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex flex-col items-center justify-center space-y-4">
+                                                <div class="text-center">
+                                                    <p class="text-blue-700 font-semibold text-sm">Relación N:1</p>
+                                                    <p class="text-blue-700 font-medium text-xs">ID_Producto</p>
+                                                </div>
+                                                <div class="text-center">
+                                                    <p class="text-blue-700 font-semibold text-sm">Relación N:1</p>
+                                                    <p class="text-blue-700 font-medium text-xs">ID_Fecha</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="space-y-4">
+                                                <div class="data-table">
+                                                    <h5 class="font-bold text-lg mb-2">Productos</h5>
+                                                    <p class="text-sm text-gray-600 mb-2">Dimensión</p>
+                                                    <div class="text-xs space-y-1">
+                                                        <p><strong>Atributos:</strong> Nombre, Categoría</p>
+                                                        <p><strong>Clave:</strong> ID_Producto</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="data-table">
+                                                    <h5 class="font-bold text-lg mb-2">Fechas</h5>
+                                                    <p class="text-sm text-gray-600 mb-2">Dimensión</p>
+                                                    <div class="text-xs space-y-1">
+                                                        <p><strong>Atributos:</strong> Año, Mes, Día</p>
+                                                        <p><strong>Clave:</strong> ID_Fecha</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <p class="text-sm text-gray-600 text-center mt-4 italic">
+                                            * Diagrama ilustrativo de un Esquema Estrella para análisis de retail
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Modelo Simple -->
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Creación de un Modelo Simple</h4>
+                                    <p class="mb-6 text-gray-700">Un modelo básico para retail incluye estas tres tablas principales, siguiendo un esquema de estrella:</p>
+                                    
+                                    <div class="space-y-6">
+                                        <div class="border-l-4 border-blue-500 pl-6">
+                                            <h5 class="font-bold text-lg text-blue-700 mb-2">📊 Tabla de Ventas (Hechos)</h5>
+                                            <p class="text-gray-700">Contiene los detalles de cada transacción: ID de transacción, fecha, monto, cantidad, ID de producto, etc.</p>
+                                        </div>
+                                        
+                                        <div class="border-l-4 border-green-500 pl-6">
+                                            <h5 class="font-bold text-lg text-green-700 mb-2">🏷️ Tabla de Productos (Dimensión)</h5>
+                                            <p class="text-gray-700">Información sobre cada producto: ID de producto, nombre, categoría, precio, marca, etc.</p>
+                                        </div>
+                                        
+                                        <div class="border-l-4 border-purple-500 pl-6">
+                                            <h5 class="font-bold text-lg text-purple-700 mb-2">📅 Tabla de Fechas (Dimensión)</h5>
+                                            <p class="text-gray-700">Tabla de calendario con todas las fechas relevantes: año, mes, día, trimestre, día de la semana, etc.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                        <p class="text-center text-yellow-800 font-medium">
+                                            💡 <strong>Ejercicio Práctico:</strong> Establecer relaciones entre estas tablas en Power BI Desktop
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="mt-6 text-center">
+                                        <a href="https://learn.microsoft.com/es-es/power-bi/transform-model/desktop-create-and-manage-relationships" target="_blank" class="inline-flex items-center bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300 font-medium">
+                                            🔗 Crear relaciones en Power BI →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SESIÓN 2 -->
+                <section id="sesion2_group" class="content-section bg-white rounded-2xl shadow-xl p-8 mb-8 hidden max-w-7xl mx-auto">
+                    <h2 class="text-4xl font-extrabold text-blue-700 mb-8 tracking-wide">Sesión 2: Diseño y Análisis Avanzado</h2>
+                    
+                    <!-- 4. Diseño de Reportes -->
+                    <div id="diseno_reportes" class="mb-12">
+                        <div class="content-card bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-8 mb-8">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-6">4. Diseño de Reportes para Retail</h3>
+                            
+                            <div class="prose max-w-none">
+                                <p class="text-lg mb-6 leading-relaxed text-gray-700">
+                                    Un reporte bien diseñado no solo presenta datos, sino que cuenta una historia y facilita la toma de decisiones.
+                                </p>
+                                
+                                <!-- Principios de Visualización -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Principios de Visualización</h4>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="space-y-4">
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">✨</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Claridad y Simplicidad</h5>
+                                                    <p class="text-gray-700">Evita el desorden visual; menos es más</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">🎨</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Consistencia</h5>
+                                                    <p class="text-gray-700">Usa colores, fuentes y estilos uniformes</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">📝</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Contexto</h5>
+                                                    <p class="text-gray-700">Proporciona títulos claros y unidades</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="space-y-4">
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">🎯</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Enfoque en el Mensaje</h5>
+                                                    <p class="text-gray-700">Destaca la información más importante</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">👥</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Audiencia</h5>
+                                                    <p class="text-gray-700">Diseña pensando en quién usará el reporte</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Visualizaciones Clave -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Visualizaciones Clave para Retail</h4>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
+                                            <div class="text-5xl mb-3">📊</div>
+                                            <h5 class="font-bold text-xl mb-2">Gráficos de Barras</h5>
+                                            <p class="text-gray-700">Ideales para comparar ventas por categoría, región o vendedor</p>
+                                        </div>
+                                        
+                                        <div class="p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
+                                            <div class="text-5xl mb-3">📈</div>
+                                            <h5 class="font-bold text-xl mb-2">Gráficos de Líneas</h5>
+                                            <p class="text-gray-700">Perfectos para mostrar tendencias temporales de ventas</p>
+                                        </div>
+                                        
+                                        <div class="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
+                                            <div class="text-5xl mb-3">🔢</div>
+                                            <h5 class="font-bold text-xl mb-2">Tarjetas (Cards)</h5>
+                                            <p class="text-gray-700">Muestran KPIs como ventas diarias y ticket promedio</p>
+                                        </div>
+                                        
+                                        <div class="p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg">
+                                            <div class="text-5xl mb-3">📋</div>
+                                            <h5 class="font-bold text-xl mb-2">Tablas y Matrices</h5>
+                                            <p class="text-gray-700">Para mostrar detalles específicos de productos y transacciones</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Filtros y Segmentadores -->
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Filtros y Segmentadores</h4>
+                                    <p class="mb-6 text-gray-700">Los filtros permiten a los usuarios interactuar con el reporte y explorar los datos según sus necesidades.</p>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="border-l-4 border-blue-500 pl-4">
+                                            <h5 class="font-semibold">🏷️ Filtros por Categoría de Producto</h5>
+                                            <p class="text-gray-700">Analiza el rendimiento de categorías específicas</p>
+                                        </div>
+                                        
+                                        <div class="border-l-4 border-green-500 pl-4">
+                                            <h5 class="font-semibold">📅 Filtros por Período de Tiempo</h5>
+                                            <p class="text-gray-700">Examina datos por año, trimestre, mes o día</p>
+                                        </div>
+                                        
+                                        <div class="border-l-4 border-purple-500 pl-4">
+                                            <h5 class="font-semibold">🎯 Filtros por Promociones</h5>
+                                            <p class="text-gray-700">Evalúa el impacto de campañas específicas</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                        <p class="text-center text-yellow-800 font-medium">
+                                            💡 <strong>Ejercicio Práctico:</strong> Crear un dashboard simple de ventas con filtros
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="mt-6 text-center">
+                                        <a href="https://learn.microsoft.com/en-us/power-bi/visuals/power-bi-report-visualizations" target="_blank" class="inline-flex items-center bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition duration-300 font-medium">
+                                            📊 Personalizar visualizaciones →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. DAX: Fórmulas y Medidas -->
+                    <div id="dax_formulas" class="mb-12">
+                        <div class="content-card bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-8 mb-8">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-6">5. DAX: Fórmulas y Medidas</h3>
+                            
+                            <div class="prose max-w-none">
+                                <p class="text-lg mb-6 leading-relaxed text-gray-700">
+                                    DAX (Data Analysis Expressions) es el lenguaje de fórmulas de Power BI que permite crear medidas que realizan cálculos dinámicos sobre tus datos.
+                                </p>
+                                
+                                <!-- Introducción a DAX -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">¿Qué es DAX?</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <p class="mb-4 text-gray-700 leading-relaxed">
+                                                DAX es una colección de funciones, operadores y constantes que se pueden usar para calcular y devolver valores. Es la clave para obtener insights profundos de tus datos.
+                                            </p>
+                                            <ul class="space-y-2 text-gray-700">
+                                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Cálculos dinámicos</li>
+                                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Medidas contextuales</li>
+                                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Análisis de tiempo</li>
+                                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Comparaciones avanzadas</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-gray-50 rounded-lg p-4">
+                                            <h5 class="font-semibold mb-3">Ejemplo de Medida DAX:</h5>
+                                            <pre class="bg-gray-800 text-green-400 p-3 rounded text-sm overflow-x-auto">
+Total Ventas = 
+SUM(Ventas[Monto])
+                                            </pre>
+                                            <p class="text-sm text-gray-600 mt-2">Esta medida suma todos los valores de la columna Monto de la tabla Ventas.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Medidas Básicas -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Medidas Básicas para Retail</h4>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">💰</span>
+                                                    Total de Ventas: SUM(Ventas[Monto])
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="mb-3 text-gray-700">Calcula la suma total de los montos de ventas.</p>
+                                                <pre class="bg-gray-800 text-green-400 p-3 rounded text-sm mb-3">Total de Ventas = SUM(Ventas[Monto])</pre>
+                                                <a href="https://learn.microsoft.com/en-nz/dax/sum-function-dax" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    📖 Función SUM en DAX →
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">#️⃣</span>
+                                                    Conteo de Transacciones
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="mb-3 text-gray-700">Cuenta el número de transacciones únicas.</p>
+                                                <pre class="bg-gray-800 text-green-400 p-3 rounded text-sm mb-3">Conteo Transacciones = COUNT(Ventas[ID_Transacción])</pre>
+                                                <a href="https://learn.microsoft.com/es-es/dax/count-function-dax" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    📖 Función COUNT en DAX →
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">🎟️</span>
+                                                    Ticket Promedio
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="mb-3 text-gray-700">Calcula el valor promedio de cada transacción.</p>
+                                                <pre class="bg-gray-800 text-green-400 p-3 rounded text-sm mb-3">Ticket Promedio = DIVIDE([Total de Ventas], [Conteo Transacciones])</pre>
+                                                <a href="https://learn.microsoft.com/es-es/dax/best-practices/dax-divide-function-operator" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    📖 Función DIVIDE en DAX →
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">📈</span>
+                                                    Porcentaje de Margen
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="mb-3 text-gray-700">Calcula el porcentaje de margen de ganancia.</p>
+                                                <pre class="bg-gray-800 text-green-400 p-3 rounded text-sm mb-3">% Margen = DIVIDE([Ganancia Total], [Total de Ventas])</pre>
+                                                <p class="text-sm text-gray-600">Esta medida requiere que tengas una columna o medida de Ganancia Total.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Funciones Avanzadas -->
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Funciones Avanzadas</h4>
+                                    <p class="mb-6 text-gray-700">DAX ofrece funciones potentes para manipular el contexto de filtro y realizar cálculos complejos.</p>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">🧮</span>
+                                                    CALCULATE() - La función más poderosa
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="mb-3 text-gray-700">Evalúa una expresión en un contexto de filtro modificado.</p>
+                                                <pre class="bg-gray-800 text-green-400 p-3 rounded text-sm mb-3">Ventas Electrónica = 
+CALCULATE(
+    [Total de Ventas],
+    Productos[Categoría] = "Electrónica"
+)</pre>
+                                                <a href="https://learn.microsoft.com/es-es/dax/calculate-function-dax" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    📖 Función CALCULATE →
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">🗓️</span>
+                                                    Inteligencia de Tiempo
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="mb-3 text-gray-700">Compara períodos y analiza tendencias temporales.</p>
+                                                <pre class="bg-gray-800 text-green-400 p-3 rounded text-sm mb-3">Ventas Año Anterior = 
+CALCULATE(
+    [Total de Ventas],
+    SAMEPERIODLASTYEAR(Fechas[Fecha])
+)</pre>
+                                                <a href="https://dax.guide/" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    📖 DAX Guide - Funciones de Tiempo →
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="accordion-item border border-gray-200 rounded-lg">
+                                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center rounded-lg">
+                                                <span class="flex items-center">
+                                                    <span class="text-2xl mr-3">💡</span>
+                                                    Variables (VAR) - Mejor rendimiento
+                                                </span>
+                                                <span class="accordion-icon">▼</span>
+                                            </button>
+                                            <div class="accordion-content p-6 bg-white hidden">
+                                                <p class="mb-3 text-gray-700">Las variables mejoran la legibilidad y el rendimiento al evitar recálculos.</p>
+                                                <pre class="bg-gray-800 text-green-400 p-3 rounded text-sm mb-3">Medida con VAR =
+VAR TotalVentas = [Total de Ventas]
+VAR TotalTransacciones = [Conteo Transacciones]
+RETURN
+    DIVIDE(TotalVentas, TotalTransacciones)</pre>
+                                                <a href="https://learn.microsoft.com/es-es/dax/var-dax" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
+                                                    📖 Variables en DAX →
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                        <p class="text-center text-yellow-800 font-medium">
+                                            💡 <strong>Ejercicio Práctico:</strong> Construir medidas avanzadas y aplicarlas al reporte
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="mt-6 text-center">
+                                        <a href="https://learn.microsoft.com/es-es/power-bi/transform-model/desktop-quickstart-learn-dax-basics" target="_blank" class="inline-flex items-center bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition duration-300 font-medium">
+                                            📚 Aspectos básicos de DAX →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Publicación y Colaboración -->
+                    <div id="publicacion_colaboracion" class="mb-12">
+                        <div class="content-card bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-8 mb-8">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-6">6. Publicación y Colaboración</h3>
+                            
+                            <div class="prose max-w-none">
+                                <p class="text-lg mb-6 leading-relaxed text-gray-700">
+                                    El Servicio Power BI te permite compartir tus informes y colaborar con tu equipo de diferentes maneras.
+                                </p>
+                                
+                                <!-- Opciones de Publicación -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Opciones de Publicación</h4>
+                                    
+                                    <div class="space-y-6">
+                                        <div class="border-l-4 border-blue-500 pl-6">
+                                            <h5 class="font-bold text-lg text-blue-700 mb-2">☁️ Publicar en Power BI Service</h5>
+                                            <p class="text-gray-700 mb-3">Sube tu archivo .pbix desde Power BI Desktop al entorno en la nube para hacerlo accesible desde cualquier lugar.</p>
+                                            <div class="bg-blue-50 p-4 rounded-lg">
+                                                <p class="text-sm text-blue-800"><strong>Pasos:</strong> Archivo → Publicar → Seleccionar área de trabajo → Publicar</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="border-l-4 border-green-500 pl-6">
+                                            <h5 class="font-bold text-lg text-green-700 mb-2">🔗 Compartir con Enlaces</h5>
+                                            <p class="text-gray-700 mb-3">Genera enlaces para compartir con personas específicas o con toda tu organización.</p>
+                                            <div class="bg-green-50 p-4 rounded-lg">
+                                                <p class="text-sm text-green-800"><strong>Tipos:</strong> Enlaces internos, enlaces públicos, insertar en web</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="border-l-4 border-purple-500 pl-6">
+                                            <h5 class="font-bold text-lg text-purple-700 mb-2">👥 Grupos y Aplicaciones</h5>
+                                            <p class="text-gray-700 mb-3">Empaqueta colecciones de dashboards e informes para una distribución más estructurada.</p>
+                                            <div class="bg-purple-50 p-4 rounded-lg">
+                                                <p class="text-sm text-purple-800"><strong>Beneficio:</strong> Control granular de permisos y organización por equipos</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Gobernanza de Datos -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Buenas Prácticas de Gobernanza</h4>
+                                    <p class="mb-6 text-gray-700">La gobernanza asegura que la información se gestione de manera segura, consistente y confiable.</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="space-y-4">
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">👑</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Propiedad de los Datos</h5>
+                                                    <p class="text-gray-700">Definir quién es responsable de los datos y su calidad</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">🔒</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Seguridad y Privacidad</h5>
+                                                    <p class="text-gray-700">Implementar medidas para proteger información sensible</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="space-y-4">
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">✅</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Calidad de los Datos</h5>
+                                                    <p class="text-gray-700">Establecer procesos para mantener precisión y fiabilidad</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">📊</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Auditoría y Monitoreo</h5>
+                                                    <p class="text-gray-700">Rastrear el uso de los datos y los informes</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6 text-center">
+                                        <a href="https://learn.microsoft.com/es-es/power-bi/collaborate-share/service-share-dashboards" target="_blank" class="inline-flex items-center bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition duration-300 font-medium">
+                                            🤝 Colaboración en Power BI →
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <!-- Conclusiones -->
+                                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 border border-blue-200">
+                                    <h4 class="text-2xl font-bold text-blue-800 mb-4">Conclusiones del Aprendizaje</h4>
+                                    <p class="text-lg leading-relaxed text-gray-700">
+                                        Al finalizar esta capacitación, los participantes habrán adquirido una base sólida en Power BI para aplicar en el análisis de datos de retail, desde la conexión y limpieza hasta el modelado, diseño de reportes y publicación.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Recursos y Requisitos -->
+                    <div id="recursos_requisitos" class="mb-12">
+                        <div class="content-card bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl p-8">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-6">7. Recursos y Requisitos</h3>
+                            
+                            <div class="prose max-w-none">
+                                <!-- Requisitos -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Requisitos para la Capacitación</h4>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="space-y-4">
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">📊</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Excel Instalado</h5>
+                                                    <p class="text-gray-700">Para trabajar con archivos de datos de ejemplo</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">💻</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Power BI Desktop</h5>
+                                                    <p class="text-gray-700">Asegúrate de tener la última versión instalada</p>
+                                                    <a href="https://www.microsoft.com/es-es/download/details.aspx?id=58494" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                        Descarga aquí →
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="space-y-4">
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">📁</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Datos de Ejemplo</h5>
+                                                    <p class="text-gray-700">Se proporcionarán archivos de ventas de muestra durante la capacitación</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex items-start space-x-3">
+                                                <span class="text-2xl">☁️</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Cuenta de Power BI</h5>
+                                                    <p class="text-gray-700">Necesaria para publicar y compartir informes</p>
+                                                    <a href="https://powerbi.microsoft.com/es-es/pricing/" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                        Registro →
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Materiales -->
+                                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Materiales de Capacitación</h4>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="border border-gray-200 rounded-lg p-4">
+                                            <div class="flex items-center space-x-3">
+                                                <span class="text-3xl">📄</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">PDF del Temario</h5>
+                                                    <p class="text-gray-700">Documento que guía toda la capacitación con ejemplos y ejercicios</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="border border-gray-200 rounded-lg p-4">
+                                            <div class="flex items-center space-x-3">
+                                                <span class="text-3xl">📊</span>
+                                                <div>
+                                                    <h5 class="font-semibold text-lg">Archivo .pbix de Referencia</h5>
+                                                    <p class="text-gray-700">Para las actividades prácticas y como modelo de referencia</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Enlaces Adicionales -->
+                                <div class="bg-white rounded-lg shadow-md p-6">
+                                    <h4 class="text-2xl font-semibold text-gray-800 mb-4">Enlaces para Profundizar</h4>
+                                    <p class="mb-6 text-gray-700">Recursos oficiales para expandir tu conocimiento en Power BI:</p>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="space-y-3">
+                                            <h5 class="font-semibold text-lg text-blue-700">Fundamentos</h5>
+                                            <ul class="space-y-2 text-sm">
+                                                <li><a href="https://learn.microsoft.com/es-es/training/powerplatform/power-bi" target="_blank" class="text-blue-600 hover:text-blue-800">📚 Introducción a Power BI</a></li>
+                                                <li><a href="https://learn.microsoft.com/es-mx/power-bi/fundamentals/power-bi-service-overview" target="_blank" class="text-blue-600 hover:text-blue-800">☁️ Servicio Power BI</a></li>
+                                                <li><a href="https://learn.microsoft.com/en-us/power-query/power-query-what-is-power-query" target="_blank" class="text-blue-600 hover:text-blue-800">🔄 Power Query</a></li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="space-y-3">
+                                            <h5 class="font-semibold text-lg text-green-700">Modelado y DAX</h5>
+                                            <ul class="space-y-2 text-sm">
+                                                <li><a href="https://learn.microsoft.com/es-es/power-bi/transform-model/desktop-create-and-manage-relationships" target="_blank" class="text-blue-600 hover:text-blue-800">🔗 Relaciones en Power BI</a></li>
+                                                <li><a href="https://learn.microsoft.com/es-es/dax/dax-function-reference" target="_blank" class="text-blue-600 hover:text-blue-800">📐 Referencia DAX</a></li>
+                                                <li><a href="https://dax.guide/" target="_blank" class="text-blue-600 hover:text-blue-800">🎯 DAX Guide</a></li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="space-y-3">
+                                            <h5 class="font-semibold text-lg text-purple-700">Visualización</h5>
+                                            <ul class="space-y-2 text-sm">
+                                                <li><a href="https://learn.microsoft.com/en-us/power-bi/visuals/power-bi-report-visualizations" target="_blank" class="text-blue-600 hover:text-blue-800">📊 Visualizaciones</a></li>
+                                                <li><a href="https://powerbi.pl/en/blog/from-the-bi-industry/5-best-practices-for-data-visualisation-in-power-bi" target="_blank" class="text-blue-600 hover:text-blue-800">✨ Mejores Prácticas</a></li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="space-y-3">
+                                            <h5 class="font-semibold text-lg text-orange-700">Colaboración</h5>
+                                            <ul class="space-y-2 text-sm">
+                                                <li><a href="https://learn.microsoft.com/es-es/power-bi/collaborate-share/service-share-dashboards" target="_blank" class="text-blue-600 hover:text-blue-800">🤝 Compartir Informes</a></li>
+                                                <li><a href="https://learn.microsoft.com/en-us/power-bi/guidance/fabric-adoption-roadmap-governance" target="_blank" class="text-blue-600 hover:text-blue-800">🛡️ Gobernanza</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIDEO SESIÓN -->
+                <section id="video_sesion" class="content-section bg-white rounded-2xl shadow-xl p-8 mb-8 hidden max-w-7xl mx-auto">
+                    <h2 class="text-4xl font-extrabold text-blue-700 mb-8 tracking-wide">Video de la Sesión de Capacitación</h2>
+                    
+                    <div class="prose max-w-none">
+                        <p class="text-lg mb-6 leading-relaxed text-gray-700">
+                            Aquí podrás encontrar el video correspondiente a la sesión de capacitación para revisar los conceptos y prácticas a tu propio ritmo.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-8">
+                            <div class="video-container mb-6">
+                                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            
+                            <div class="text-center">
+                                <p class="text-md text-gray-600 mb-4">
+                                    <strong>Duración:</strong> 2 horas | <strong>Idioma:</strong> Español
+                                </p>
+                                <p class="text-sm text-gray-500 italic">
+                                    *Nota: Este es un video de ejemplo. Reemplaza la URL del iframe con el enlace real del video de tu sesión.*
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">📝 Temas Cubiertos</h3>
+                                <ul class="space-y-2 text-gray-700 text-sm">
+                                    <li>• Introducción práctica a Power BI</li>
+                                    <li>• Conexión y preparación de datos</li>
+                                    <li>• Modelado de datos para retail</li>
+                                    <li>• Creación de visualizaciones</li>
+                                    <li>• Fórmulas DAX básicas</li>
+                                    <li>• Publicación y compartir</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3">💡 Consejos para el Video</h3>
+                                <ul class="space-y-2 text-gray-700 text-sm">
+                                    <li>• Pausa el video para practicar cada ejercicio</li>
+                                    <li>• Ten Power BI Desktop abierto mientras ves</li>
+                                    <li>• Descarga los archivos de ejemplo antes de empezar</li>
+                                    <li>• Toma notas de las fórmulas DAX</li>
+                                    <li>• Repite las secciones que consideres necesarias</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-gray-800 text-white py-6 px-6 text-center mt-auto">
+                <div class="max-w-7xl mx-auto">
+                    <p class="text-lg font-semibold">&copy; 2025 Data Bunker. Todos los derechos reservados.</p>
+                    <p class="text-sm mt-2 text-gray-300">https://data-bunker.ai/</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const ecoTabButtons = document.querySelectorAll('.eco-tab-button');
+        const ecoContents = document.querySelectorAll('.eco-content');
+        const accordionHeaders = document.querySelectorAll('.accordion-item .accordion-header');
+        const accordionSidebarHeaders = document.querySelectorAll('.accordion-sidebar-header');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const sidebar = document.getElementById('sidebar');
+
+        // Toggle del menú móvil
+        mobileMenuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        // Función para mostrar una sección de contenido
+        function showContentSection(id) {
+            contentSections.forEach(section => {
+                section.classList.add('hidden');
+            });
+            const targetSection = document.getElementById(id);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+            
+            // Cerrar sidebar en móvil después de selección
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        }
+
+        // Manejo de enlaces de navegación
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                // Determinar qué sección principal mostrar
+                let mainSectionToShowId = '';
+                if (targetId === 'inicio' || targetId === 'video_sesion') {
+                    mainSectionToShowId = targetId;
+                } else if (['introduccion_powerbi', 'preparacion_datos', 'modelado_datos'].includes(targetId)) {
+                    mainSectionToShowId = 'sesion1_group';
+                } else if (['diseno_reportes', 'dax_formulas', 'publicacion_colaboracion', 'recursos_requisitos'].includes(targetId)) {
+                    mainSectionToShowId = 'sesion2_group';
+                }
+
+                if (mainSectionToShowId) {
+                    showContentSection(mainSectionToShowId);
+                }
+
+                // Scroll al elemento específico
+                if (targetElement) {
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            });
+        });
+
+        // Mostrar inicio por defecto
+        showContentSection('inicio');
+
+        // Manejo de pestañas del ecosistema
+        ecoTabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Desactivar todos
+                ecoContents.forEach(content => content.classList.add('hidden'));
+                ecoTabButtons.forEach(btn => {
+                    btn.classList.remove('bg-blue-600', 'text-white');
+                    btn.classList.add('bg-blue-100', 'text-blue-700');
+                });
+
+                // Activar seleccionado
+                const targetId = button.dataset.target;
+                const targetContent = document.getElementById(`eco-content-${targetId}`);
+                if (targetContent) {
+                    targetContent.classList.remove('hidden');
+                }
+                button.classList.remove('bg-blue-100', 'text-blue-700');
+                button.classList.add('bg-blue-600', 'text-white');
+            });
+        });
+
+        // Activar primera pestaña por defecto
+        if (ecoTabButtons.length > 0) {
+            ecoTabButtons[0].click();
+        }
+
+        // Manejo de acordeones de contenido
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('.accordion-icon');
+                
+                if (content && icon) {
+                    if (content.classList.contains('hidden')) {
+                        content.classList.remove('hidden');
+                        content.classList.add('open');
+                        icon.textContent = '▲';
+                    } else {
+                        content.classList.add('hidden');
+                        content.classList.remove('open');
+                        icon.textContent = '▼';
+                    }
+                }
+            });
+        });
+
+        // Manejo de acordeones del sidebar
+        accordionSidebarHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('.accordion-icon');
+                
+                if (content && icon) {
+                    if (content.classList.contains('hidden')) {
+                        // Cerrar otros acordeones del sidebar
+                        accordionSidebarHeaders.forEach(otherHeader => {
+                            if (otherHeader !== header) {
+                                const otherContent = otherHeader.nextElementSibling;
+                                const otherIcon = otherHeader.querySelector('.accordion-icon');
+                                if (otherContent && otherIcon) {
+                                    otherContent.classList.add('hidden');
+                                    otherContent.classList.remove('open');
+                                    otherIcon.textContent = '▼';
+                                }
+                            }
+                        });
+                        
+                        content.classList.remove('hidden');
+                        content.classList.add('open');
+                        icon.textContent = '▲';
+                    } else {
+                        content.classList.add('hidden');
+                        content.classList.remove('open');
+                        icon.textContent = '▼';
+                    }
+                }
+            });
+        });
+
+        // Chart.js para el gráfico de demostración
+        const salesData = {
+            labels: ['Electrónica', 'Ropa', 'Alimentos', 'Hogar', 'Juguetes', 'Libros'],
+            datasets: [{
+                label: 'Ventas por Categoría (USD)',
+                data: [12000, 8500, 5000, 7000, 3000, 2500],
+                backgroundColor: [
+                    'rgba(59, 130, 246, 0.6)',
+                    'rgba(16, 185, 129, 0.6)',
+                    'rgba(245, 158, 11, 0.6)',
+                    'rgba(139, 92, 246, 0.6)',
+                    'rgba(239, 68, 68, 0.6)',
+                    'rgba(75, 85, 99, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(245, 158, 11, 1)',
+                    'rgba(139, 92, 246, 1)',
+                    'rgba(239, 68, 68, 1)',
+                    'rgba(75, 85, 99, 1)'
+                ],
+                borderWidth: 2
+            }]
+        };
+
+        const salesConfig = {
+            type: 'bar',
+            data: salesData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('es-MX', { 
+                                        style: 'currency', 
+                                        currency: 'USD' 
+                                    }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Monto de Ventas (USD)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return new Intl.NumberFormat('es-MX', { 
+                                    style: 'currency', 
+                                    currency: 'USD',
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                }).format(value);
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Categoría de Producto'
+                        }
+                    }
+                }
+            }
+        };
+
+        // Inicializar el gráfico
+        const salesChartCtx = document.getElementById('salesByCategoryChart');
+        if (salesChartCtx) {
+            new Chart(salesChartCtx, salesConfig);
+        }
+
+        // Cerrar sidebar al hacer clic fuera de él en móvil
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth < 768) {
+                if (!sidebar.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        });
+
+        // Manejar redimensionamiento de ventana
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('-translate-x-full');
+            }
+        });
+    </script>
+</body>
+</html>
